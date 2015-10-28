@@ -1,0 +1,7 @@
+/* CSS declarations go here */
+table.board td{
+  padding: 10px;
+  border: 1px solid;
+  border-radius: 4px;
+  background-color: lightblue;
+}

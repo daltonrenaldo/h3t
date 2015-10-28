@@ -1,0 +1,25 @@
+<head>
+  <title>tictactoe</title>
+</head>
+
+<body>
+  <h1>Welcome to Meteor!</h1>
+
+  {{> Board }}
+</body>
+
+<template name="Board">
+  <table class="board">
+    {{#each rows}}
+      {{> row values=this}}
+    {{/each}}
+  </table>
+</template>
+
+<template name="row">
+  <tr>
+    {{#each values}}
+      <td>{{ this }}</td>
+    {{/each}}
+  </tr>
+</template>
