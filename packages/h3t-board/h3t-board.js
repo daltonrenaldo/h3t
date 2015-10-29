@@ -1,10 +1,14 @@
 Board = class {
   constructor(size) {
     var size = size || 3;
-    this.values = [];
-    for (var i = 0; i < (size * size); i++) {
-      this.values.push("");
+    this.cells = [];
+
+    for (var row = 0; row < size; row++) {
+      for (var col = 0; col < size; col++) {
+        this.cells.push(new _BoardCell(row, col, ""));
+      }
     }
+
     this.size = size;
 
     this.tracker = new Tracker.Dependency;
@@ -13,77 +17,77 @@ Board = class {
   get grid () {
     this.tracker.depend();
     var grid = [];
-    for (var i = 0; i < this.size; i++) {
-      grid.push(this.row(i))
+
+    for (var row = 0; row < this.size; row ++) {
+      var rowCells = [];
+      for (var col = 0; col < this.size; col++) {
+        rowCells.push(this.getCell(row, col));
+      }
+      grid.push(rowCells);
     }
+
     return grid;
   }
 
   row (n) {
-    var row = new Array(this.size);
+    var row = [];
     for (var i = 0; i < this.size; i++) {
-      var index = this.cellIndex(n, i);
-      row[i] = this.values[index];
+      row.push(this.getCell(n, i));
     };
-
     return row;
   }
 
-  cellIndex (row, col) {
-    return (row * this.size) + col;
-  }
-
-
   col (n) {
-    var column = new Array(this.size);
+    var column = [];
     for (var i = 0; i < this.size; i++) {
-      var index = this.cellIndex(i, n);
-      column[i] = this.values[index];
+      column.push(this.getCell(i, n));
     }
     return column;
   }
 
   rDiag ()  {
-    var diag = new Array(this.size);
+    var diag = [];
     for (var i = 0; i < this.size; i++) {
-      var index = this.cellIndex(i, i);
-      diag[i] = this.values[index];
+      diag.push(this.getCell(i, i));
     }
-
     return diag;
   }
 
   lDiag () {
-    var diag = new Array(this.size);
+    var diag = [];
     for (var i = this.size -1; i >= 0; i--) {
-      var index = this.cellIndex(i, this.size - 1 - i);
-      diag[i] = this.values[index];
+      diag.push(this.getCell(i, this.size - 1 - i))
     }
     return diag;
   }
 
   getCell (row, col) {
-    var index = this.cellIndex(row, col);
-    return this.values[index];
+    return _.find(this.cells, function (cell) {
+      return cell.row == row && cell.col == col;
+    });
   }
 
   setCell (row, col, value) {
-    this.clearCell(row, col);
-    var index = this.cellIndex(row, col);
-    this.values[index] = value;
+    var cell = this.getCell(row, col);
+    cell.value = value;
     this.tracker.changed();
   }
 
   clearCell (row, col) {
-    var index = this.cellIndex(row, col);
-    this.values[index] = null;
-    this.tracker.changed();
+    this.setCell(row, col, "");
   }
-
 
   _render () {
     var html = Blaze.toHTMLWithData(Template["Board"], this.grid);
     console.log(html);
     return html;
+  }
+}
+
+class _BoardCell {
+  constructor (row, col, value) {
+    this.row = row;
+    this.col = col;
+    this.value = value;
   }
 }

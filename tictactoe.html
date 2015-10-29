@@ -20,7 +20,7 @@
   <tr>
     {{#each values }}
       <td data-row="{{ ../row }}" data-col="{{ @index }}">
-        <div class="pawn" id="{{../row}}{{@index}}" draggable="true">{{ this }}</div>
+        <div class="pawn" id="{{../row}}{{@index}}" draggable="true">{{ this.value }}</div>
       </td>
     {{/each}}
   </tr>
