@@ -7,17 +7,28 @@ if (Meteor.isClient) {
 
   Template.Board.events({
     "click td": function (event, template) {
-      console.log(event.target);
       var $td = $(event.target);
-      console.log(this);
+      var cell = {row: $td.data("row"), col: $td.data("col")};
 
-      var cell = {row: $td.data("row"), col: $td.data("col")}
-      console.log("cell", cell);
       h3t.handleClick(cell);
+    },
+
+    "dragstart .pawn": function (event, template) {
+      event.originalEvent.dataTransfer.setData("text", event.target.id);
+    },
+
+    "dragover td": function (event, template) {
+      event.originalEvent.preventDefault();
+    },
+
+    "drop td": function (event, template) {
+      var data = event.originalEvent.dataTransfer.getData("text");
+      var $piece = $("#"+data);
+      var $cell = $(event.target);
+
+      h3t.move($piece, $cell);
     }
   });
-
-
 }
 
 if (Meteor.isServer) {

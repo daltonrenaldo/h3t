@@ -1,9 +1,9 @@
 <head>
-  <title>tictactoe</title>
+  <title>Haitian Tic Tac Toe</title>
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
+  <h1>Haitian TicTacToe</h1>
 
   {{> Board }}
 </body>
@@ -19,8 +19,14 @@
 <template name="row">
   <tr>
     {{#each values }}
-      <td data-row="{{ ../row }}" data-col="{{ @index }}">
-        <div class="pawn" id="{{../row}}{{@index}}" draggable="true">{{ this.value }}</div>
+      <td data-row="{{ ../row }}" data-col="{{ @index }}" class="{{#unless this.value }}empty{{/unless}}">
+        {{#if this.value }}
+          <div data-row="{{ ../row }}"
+            data-col="{{ @index }}"
+            class="pawn"
+            id="{{../row}}_{{@index}}"
+            draggable="true">{{ this.value }}</div>
+        {{/if}}
       </td>
     {{/each}}
   </tr>
