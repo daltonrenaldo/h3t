@@ -1,5 +1,6 @@
 <head>
   <title>Haitian Tic Tac Toe</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
@@ -9,7 +10,7 @@
 </body>
 
 <template name="Board">
-  <table class="board">
+  <table class="board {{ playerturn }} {{ deviceType }}">
     {{#each rows}}
       {{> row row=@index values=this }}
     {{/each}}
@@ -21,13 +22,16 @@
     {{#each values }}
       <td data-row="{{ ../row }}" data-col="{{ @index }}" class="{{#unless this.value }}empty{{/unless}}">
         {{#if this.value }}
-          <div data-row="{{ ../row }}"
-            data-col="{{ @index }}"
-            class="pawn"
-            id="{{../row}}_{{@index}}"
-            draggable="true">{{ this.value }}</div>
+          {{> pawn row=../row col=@index val=this.value }}
         {{/if}}
       </td>
     {{/each}}
   </tr>
+</template>
+
+<template name="pawn">
+  <div data-row="{{ row }}"
+    data-col="{{ col }}"
+    class="pawn"
+    id="{{row}}_{{col}}">{{ val }}</div>
 </template>
