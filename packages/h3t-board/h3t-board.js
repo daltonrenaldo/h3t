@@ -1,17 +1,9 @@
 Board = class {
   constructor(size) {
     var size = size || 3;
-    this.cells = [];
-
-    for (var row = 0; row < size; row++) {
-      for (var col = 0; col < size; col++) {
-        this.cells.push(new _BoardCell(row, col, ""));
-      }
-    }
-
     this.size = size;
-
     this.tracker = new Tracker.Dependency;
+    this.reset();
   }
 
   get grid () {
@@ -27,6 +19,31 @@ Board = class {
     }
 
     return grid;
+  }
+
+  get transposedGrid () {
+    this.tracker.depend();
+    var grid = [];
+    for (var col = 0; col < this.size; col++) {
+      var colCells = [];
+      for (var row = 0; row < this.size; row ++) {
+        colCells.push(this.getCell(row, col));
+      }
+      grid.push(colCells);
+    }
+
+    return grid;
+  }
+
+  reset (reactive) {
+    this.cells = [];
+
+    for (var row = 0; row < this.size; row++) {
+      for (var col = 0; col < this.size; col++) {
+        this.cells.push(new _BoardCell(row, col, ""));
+      }
+    }
+    if (reactive) { this.tracker.changed() }
   }
 
   row (n) {

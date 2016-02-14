@@ -14,12 +14,18 @@ body {
   text-align: center;
 }
 
-table.board {
+.board {
   margin: 0 auto;
+  display: table;
 
-  td {
+  .cell {
+    position: relative;
+    margin: 10px;
+    display: inline-table;
     font-weight: bolder;
     font-size: 2em;
+    vertical-align: middle;
+    line-height: 45px;
 
     padding: 15px;
     height: 75px;
@@ -29,10 +35,90 @@ table.board {
 
     cursor: pointer;
     color: white;
+
+    &[data-player=X] {
+      background-color: #dc685a;
+      .line {
+        border-color: #dc685a;
+      }
+    }
+
+    &[data-player=O] {
+      background-color: #ecaf4f;
+      .line {
+        border-color: #ecaf4f;
+      }
+    }
+
+    .line {
+      width: 0px;
+      height: 20px;
+      border-color: #78bec5;
+      border-width: 10px;
+      z-index: -1;
+
+      position: absolute;
+      &.bottom-right {
+        border-right-style: solid;
+        -webkit-transform:
+          translateY(-13px)
+          translateX(18px)
+          rotate(-49deg);
+        right: 0;
+        top: 100%;
+        height: 45px;
+
+      }
+      &.bottom-left {
+        border-left-style: solid;
+        height: 71px;
+        -webkit-transform:
+          translateY(50%)
+          translateX(-50%)
+          rotate(49deg);
+        left: 0;
+        bottom: 0px;
+      }
+
+      &.bottom-mid {
+        border-left-style: solid;
+        top: 100%;
+        left: calc(50% - 5px);
+      }
+
+      &.left-mid {
+        width: 25px;
+        border-top-style: solid;
+        left: calc(100%);
+        top: calc(50% - 5px);
+      }
+
+      &.top-right {
+        border-right-style: solid;
+        height: 41px;
+        -webkit-transform:
+          translateY(15px)
+          translateX(17px)
+          rotate(49deg);
+        right: 0;
+        top: -45px;
+      }
+
+      &.top-left {
+        border-left-style: solid;
+        height: 75px;
+        -webkit-transform:
+          translateY(-50%)
+          translateX(-50%)
+          rotate(-49deg);
+        left: 0;
+        top: 0;
+      }
+    }
   }
 
   &.desktop {
-    td {
+    .cell {
       &.empty {
         &:hover {
           background-color: #3d4250;
@@ -45,13 +131,13 @@ table.board {
   }
 
   &.player-1 {
-    &.desktop td.empty:hover:after {
+    &.desktop .cell.empty:hover:after {
       content: $player-1-icon;
     }
   }
 
   &.player-2 {
-    &.desktop td.empty:hover:after {
+    &.desktop .cell.empty:hover:after {
       content: $player-2-icon;
     }
   }

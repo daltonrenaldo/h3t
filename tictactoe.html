@@ -7,26 +7,35 @@
   <h1>Haitian TicTacToe</h1>
 
   {{> Board }}
+  Turn: {{ playerturn }}
 </body>
 
 <template name="Board">
-  <table class="board {{ playerturn }} {{ deviceType }}">
+  <div class="board {{ playerturn }} {{ deviceType }}">
     {{#each rows}}
       {{> row row=@index values=this }}
     {{/each}}
-  </table>
+  </div>
 </template>
 
 <template name="row">
-  <tr>
+  <div class="row">
     {{#each values }}
-      <td data-row="{{ ../row }}" data-col="{{ @index }}" class="{{#unless this.value }}empty{{/unless}}">
-        {{#if this.value }}
-          {{> pawn row=../row col=@index val=this.value }}
-        {{/if}}
-      </td>
+      {{> cell row=../row col=@index value=this.value}}
     {{/each}}
-  </tr>
+  </div>
+</template>
+
+<template name="cell">
+  <div data-row="{{ row }}" data-col="{{ col }}" data-player="{{ value }}"
+       class="cell {{#unless value }}empty{{/unless}}">
+    {{#if value }}
+      {{> pawn row=row col=col val=value }}
+    {{/if}}
+    <div class="line {{ lineClass 'vertical' row col }}"></div>
+    <div class="line {{ lineClass 'horizontal' row col }}"></div>
+    <div class="line {{ lineClass 'diagonal' row col }}"></div>
+  </div>
 </template>
 
 <template name="pawn">
